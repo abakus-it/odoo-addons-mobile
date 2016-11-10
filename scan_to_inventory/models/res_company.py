@@ -3,11 +3,10 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from openerp.osv import fields
-from openerp.osv.orm import Model
+from odoo import fields, models
 
 
-class ResCompany(Model):
+class ResCompany(models.Model):
     _inherit = 'res.company'
 
     _columns = {
