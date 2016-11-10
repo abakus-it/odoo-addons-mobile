@@ -3,25 +3,22 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import fields, models, _
+from openerp import fields, models, _
 
 
 class StockInventory(models.Model):
     _inherit = 'stock.inventory'
 
     # Compute Section
-    def compute_inventory_line_qty(
+    def _compute_inventory_line_qty(
             self, cr, uid, ids, name, args, context=None):
         res = {}
         for inventory in self.browse(cr, uid, ids, context=context):
             res[inventory.id] = len(inventory.inventory_line_id)
         return res
 
-    # Columns Section
-    _columns = {
-        'inventory_line_qty': fields.function(
-            compute_inventory_line_qty, string='Lines Qty', type='integer'),
-    }
+    # Fields
+    inventory_line_qty = fields.Integer(compute='_compute_inventory_line_qty', string='Lines Qty')
 
     def create_by_scan(
             self, cr, uid, name, context=None):

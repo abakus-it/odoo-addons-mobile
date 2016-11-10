@@ -3,14 +3,14 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import fields, models
+from openerp import fields, models
 
 
 class StockLocation(models.Model):
     _inherit = 'stock.location'
 
     # Compute Section
-    def compute_parent_complete_name(
+    def _compute_parent_complete_name(
             self, cr, uid, ids, name, args, context=None):
         res = {}
         for location in self.browse(cr, uid, ids, context=context):
@@ -20,9 +20,6 @@ class StockLocation(models.Model):
                 res[location.id] = ''
         return res
 
-    # Columns Section
-    _columns = {
-        'parent_complete_name': fields.function(
-            compute_parent_complete_name, string='Parent Complete Name',
-            type='char'),
-    }
+    # Fields Section
+    parent_complete_name = fields.Char(
+            compute='_compute_parent_complete_name', string='Parent Complete Name')
